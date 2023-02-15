@@ -12,9 +12,10 @@ class TimerStopWatch {
     int seconds = 0,
     String? timeFormat,
   }) async* {
-    if (hour < 0 || minute < 0 || seconds < 0)
+    if (hour < 0 || minute < 0 || seconds < 0) {
       throw ArgumentError("Negative numbers are not allowed.");
-
+    }
+    
     StreamSubscription? _sub;
     StreamController _streamController = StreamController();
     var _hourTime = hour;
