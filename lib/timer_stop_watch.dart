@@ -3,8 +3,8 @@ library timer_stop_watch;
 import 'dart:async';
 
 class TimerStopWatch {
-  List<StreamSubscription> _subscriptions = [];
-  List<StreamController> _streamControllers = [];
+  final List<StreamSubscription> _subscriptions = [];
+  final List<StreamController> _streamControllers = [];
 
   Stream<String> startTimer({
     int hour = 0,
