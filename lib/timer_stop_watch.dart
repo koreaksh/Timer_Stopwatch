@@ -15,13 +15,13 @@ class TimerStopWatch {
     if (hour < 0 || minute < 0 || seconds < 0) {
       throw ArgumentError("Negative numbers are not allowed.");
     }
-    
-    StreamSubscription? _sub;
-    StreamController _streamController = StreamController();
-    var _hourTime = hour;
-    var _minuteTime = minute;
-    var _secondsTime = seconds;
-    var _totalSeconds = 0;
+
+    StreamSubscription? sub;
+    StreamController streamController = StreamController();
+    var hourTime = hour;
+    var minuteTime = minute;
+    var secondsTime = seconds;
+    var totalSeconds = 0;
 
     if (timeFormat != null) {
       _validateTimeFormat(
@@ -34,94 +34,90 @@ class TimerStopWatch {
 
       if (result.length == 1) {
         bool isData1 = result[0] == "ss" ? true : false;
-        _streamController.sink.add(isData1
-            ? "${_secondsTime.toString().padLeft(2, "0")}"
-            : _secondsTime.toString());
-        _sub = Stream.periodic(Duration(seconds: 1), (_) {
-          print("실행됩니다.1");
-          if (--_secondsTime < 0) {
-            _secondsTime = 59;
-            if (--_minuteTime < 0) {
-              _minuteTime = 59;
-              if (--_hourTime < 0) {
-                _sub!.cancel();
+        streamController.sink.add(isData1
+            ? secondsTime.toString().padLeft(2, "0")
+            : secondsTime.toString());
+        sub = Stream.periodic(const Duration(seconds: 1), (_) {
+          if (--secondsTime < 0) {
+            secondsTime = 59;
+            if (minuteTime < 0) {
+              minuteTime = 59;
+              if (--hourTime < 0) {
+                sub!.cancel();
               }
             }
           }
           return isData1
-              ? "${_secondsTime.toString().padLeft(2, "0")}"
-              : _secondsTime.toString();
-        }).listen((_streamController.sink.add), onError: (error) {
-          _streamController.sink.addError(error);
+              ? secondsTime.toString().padLeft(2, "0")
+              : secondsTime.toString();
+        }).listen((streamController.sink.add), onError: (error) {
+          streamController.sink.addError(error);
         });
       } else if (result.length == 3) {
         bool isData1 = result[0] == "mm" ? true : false;
-        String m_s = result[1];
+        String mS = result[1];
         bool isData2 = result[2] == "ss" ? true : false;
 
-        _streamController.sink.add("${isData1 ? _minuteTime.toString().padLeft(2, "0") : _minuteTime.toString()}${m_s}${isData2 ? _secondsTime.toString().padLeft(2, "0") : _secondsTime.toString()}");
+        streamController.sink.add("${isData1 ? minuteTime.toString().padLeft(2, "0") : minuteTime.toString()}$mS${isData2 ? secondsTime.toString().padLeft(2, "0") : secondsTime.toString()}");
 
-        _sub = Stream.periodic(Duration(seconds: 1), (_) {
-          print("실행됩니다.2");
-          if (--_secondsTime < 0) {
-            _secondsTime = 59;
-            if (--_minuteTime < 0) {
-              _minuteTime = 59;
-              if (--_hourTime < 0) {
-                _sub!.cancel();
+        sub = Stream.periodic(const Duration(seconds: 1), (_) {
+          if (--secondsTime < 0) {
+            secondsTime = 59;
+            if (--minuteTime < 0) {
+              minuteTime = 59;
+              if (--hourTime < 0) {
+                sub!.cancel();
               }
             }
           }
-          return "${isData1 ? _minuteTime.toString().padLeft(2, "0") : _minuteTime.toString()}${m_s}${isData2 ? _secondsTime.toString().padLeft(2, "0") : _secondsTime.toString()}";
-        }).listen((_streamController.sink.add), onError: (error) {
-          _streamController.sink.addError(error);
+          return "${isData1 ? minuteTime.toString().padLeft(2, "0") : minuteTime.toString()}$mS${isData2 ? secondsTime.toString().padLeft(2, "0") : secondsTime.toString()}";
+        }).listen((streamController.sink.add), onError: (error) {
+          streamController.sink.addError(error);
         });
       } else {
         bool isData1 = result[0] == "hh" ? true : false;
-        String h_m = result[1];
+        String hM = result[1];
         bool isData2 = result[2] == "mm" ? true : false;
-        String m_s = result[3];
+        String mS = result[3];
         bool isData3 = result[4] == "ss" ? true : false;
 
-        _streamController.sink.add(
-            "${isData1 ? _hourTime.toString().padLeft(2, "0") : _hourTime.toString()}${h_m}${isData2 ? _minuteTime.toString().padLeft(2, "0") : _minuteTime.toString()}${m_s}${isData3 ? _secondsTime.toString().padLeft(2, "0") : _secondsTime.toString()}"
+        streamController.sink.add(
+            "${isData1 ? hourTime.toString().padLeft(2, "0") : hourTime.toString()}$hM${isData2 ? minuteTime.toString().padLeft(2, "0") : minuteTime.toString()}$mS${isData3 ? secondsTime.toString().padLeft(2, "0") : secondsTime.toString()}"
         );
 
-        _sub = Stream.periodic(Duration(seconds: 1), (_) {
-          print("실행됩니다.3");
-          if (--_secondsTime < 0) {
-            _secondsTime = 59;
-            if (--_minuteTime < 0) {
-              _minuteTime = 59;
-              if (--_hourTime < 0) {
-                _sub!.cancel();
+        sub = Stream.periodic(const Duration(seconds: 1), (_) {
+          if (--secondsTime < 0) {
+            secondsTime = 59;
+            if (--minuteTime < 0) {
+              minuteTime = 59;
+              if (--hourTime < 0) {
+                sub!.cancel();
               }
             }
           }
-          return "${isData1 ? _hourTime.toString().padLeft(2, "0") : _hourTime.toString()}${h_m}${isData2 ? _minuteTime.toString().padLeft(2, "0") : _minuteTime.toString()}${m_s}${isData3 ? _secondsTime.toString().padLeft(2, "0") : _secondsTime.toString()}";
-        }).listen((_streamController.sink.add), onError: (error) {
-          _streamController.sink.addError(error);
+          return "${isData1 ? hourTime.toString().padLeft(2, "0") : hourTime.toString()}$hM${isData2 ? minuteTime.toString().padLeft(2, "0") : minuteTime.toString()}$mS${isData3 ? secondsTime.toString().padLeft(2, "0") : secondsTime.toString()}";
+        }).listen((streamController.sink.add), onError: (error) {
+          streamController.sink.addError(error);
         });
       }
     } else {
-      _totalSeconds =
+      totalSeconds =
           _totalSecondsAdd(hour: hour, minute: minute, seconds: seconds);
-      _validateSecondsInRange(totalSeconds: _totalSeconds);
+      _validateSecondsInRange(totalSeconds: totalSeconds);
 
-      _sub = Stream.periodic(Duration(seconds: 1), (_) {
-        print("실행됩니다.4");
-        if (_totalSeconds <= 0) {
-          _sub!.cancel();
+      sub = Stream.periodic(const Duration(seconds: 1), (_) {
+        if (totalSeconds <= 0) {
+          sub!.cancel();
         }
-        _totalSeconds--;
-        return _totalSeconds.toString();
-      }).listen((_streamController.sink.add), onError: (error) {
-        _streamController.sink.addError(error);
+        totalSeconds--;
+        return totalSeconds.toString();
+      }).listen((streamController.sink.add), onError: (error) {
+        streamController.sink.addError(error);
       });
     }
-    _subscriptions.add(_sub);
-    _streamControllers.add(_streamController);
-    yield* _streamController.stream.map((event) => event);
+    _subscriptions.add(sub);
+    _streamControllers.add(streamController);
+    yield* streamController.stream.map((event) => event);
   }
   void _validateSecondsInRange({required int totalSeconds}) {
     if (totalSeconds >= 24 * 3600) {
@@ -188,8 +184,9 @@ class TimerStopWatch {
         .toList()
       ..sort((entry1, entry2) => entry1.key.compareTo(entry2.key));
 
-    if (sortedMap.isEmpty)
+    if (sortedMap.isEmpty) {
       throw ArgumentError("You must enter a valid time format. ex) hh:mm:ss");
+    }
 
     if (sortedMap.length == 1) {
       sortedMap[0].value.toUpperCase() == "SS"
