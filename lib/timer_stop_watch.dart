@@ -6,6 +6,20 @@ class TimerStopWatch {
   final List<StreamSubscription> _subscriptions = [];
   final List<StreamController> _streamControllers = [];
 
+  //startTimer
+  //Use the timer freely by adding hours, minutes, and seconds.
+  //You can use timeFormat to determine the type to be returned.
+  //Double-digit fixation in lowercase  seconds = 4 => 04
+  //Unfix with uppercase letters seconds = 4 => 4
+  //You can freely set the delimiter between hours, minutes, and seconds.
+  //TimeFormat Example
+  //HH-MM-SS => 9-10-3
+  //hh:mm:ss => 09:10:03
+  //MMminutess => 10minute03
+  //MMminuteSS => 10minute3
+  //ss => 03
+  //SS => 3
+  //You can freely modify and use it.
   Stream<String> startTimer({
     int hour = 0,
     int minute = 0,
@@ -16,6 +30,8 @@ class TimerStopWatch {
       throw ArgumentError("Negative numbers are not allowed.");
     }
 
+    print("실행됩니다1");
+
     StreamSubscription? sub;
     StreamController streamController = StreamController();
     var hourTime = hour;
@@ -23,6 +39,7 @@ class TimerStopWatch {
     var secondsTime = seconds;
     var totalSeconds = 0;
 
+    print("실행됩니다2");
     if (timeFormat != null) {
       _validateTimeFormat(
           hour: hour,
@@ -32,12 +49,16 @@ class TimerStopWatch {
       final List<String> result =
       _formatExtraction(timeFormat: timeFormat.trim());
 
+      print("실행됩니다3");
+
       if (result.length == 1) {
         bool isData1 = result[0] == "ss" ? true : false;
         streamController.sink.add(isData1
             ? secondsTime.toString().padLeft(2, "0")
             : secondsTime.toString());
+        print("실행됩니다4");
         sub = Stream.periodic(const Duration(seconds: 1), (_) {
+          print("실행됩니다5");
           if (--secondsTime < 0) {
             secondsTime = 59;
             if (minuteTime < 0) {
@@ -54,6 +75,7 @@ class TimerStopWatch {
           streamController.sink.addError(error);
         });
       } else if (result.length == 3) {
+        print("실행됩니다6");
         bool isData1 = result[0] == "mm" ? true : false;
         String mS = result[1];
         bool isData2 = result[2] == "ss" ? true : false;
@@ -61,6 +83,7 @@ class TimerStopWatch {
         streamController.sink.add("${isData1 ? minuteTime.toString().padLeft(2, "0") : minuteTime.toString()}$mS${isData2 ? secondsTime.toString().padLeft(2, "0") : secondsTime.toString()}");
 
         sub = Stream.periodic(const Duration(seconds: 1), (_) {
+          print("실행됩니다7");
           if (--secondsTime < 0) {
             secondsTime = 59;
             if (--minuteTime < 0) {
@@ -75,6 +98,7 @@ class TimerStopWatch {
           streamController.sink.addError(error);
         });
       } else {
+        print("실행됩니다8");
         bool isData1 = result[0] == "hh" ? true : false;
         String hM = result[1];
         bool isData2 = result[2] == "mm" ? true : false;
@@ -86,6 +110,7 @@ class TimerStopWatch {
         );
 
         sub = Stream.periodic(const Duration(seconds: 1), (_) {
+          print("실행됩니다9");
           if (--secondsTime < 0) {
             secondsTime = 59;
             if (--minuteTime < 0) {
@@ -101,11 +126,13 @@ class TimerStopWatch {
         });
       }
     } else {
+      print("실행됩니다10");
       totalSeconds =
           _totalSecondsAdd(hour: hour, minute: minute, seconds: seconds);
       _validateSecondsInRange(totalSeconds: totalSeconds);
 
       sub = Stream.periodic(const Duration(seconds: 1), (_) {
+        print("실행됩니다11");
         if (totalSeconds <= 0) {
           sub!.cancel();
         }
@@ -119,12 +146,19 @@ class TimerStopWatch {
     _streamControllers.add(streamController);
     yield* streamController.stream.map((event) => event);
   }
+
+
+  //You cannot set a time that exceeds 24 hours.
+  //Verification function for entered time
   void _validateSecondsInRange({required int totalSeconds}) {
     if (totalSeconds >= 24 * 3600) {
       throw ArgumentError("You cannot enter a value that exceeds 24 hours.");
     }
   }
 
+
+  //TimeFormat has some restrictions.
+  //Verify that TimeFormat is correct.
   void _validateTimeFormat(
       {required int hour,
         required int minute,
@@ -146,18 +180,24 @@ class TimerStopWatch {
     }
   }
 
+
+  //TimeFormat has a time limit.
+  //Verify that the time setting is correct.
   void _validateRange(String name, int value, int minValue, int maxValue) {
     if (value < minValue || value > maxValue) {
       throw ArgumentError('$name must be between $minValue and $maxValue');
     }
   }
 
+  //Returns the time entered by the user in seconds.
   int _totalSecondsAdd(
       {required int hour, required int minute, required int seconds}) {
     int totalSeconds = (hour * 3600) + (minute * 60) + seconds;
     return totalSeconds;
   }
 
+
+  //Validate and extract the entered TimeFormat.
   List<String> _formatExtraction({required String timeFormat}) {
     final upperFormat = timeFormat.toUpperCase();
     final Map<int, String> map = {};
@@ -218,6 +258,8 @@ class TimerStopWatch {
   }
 
 
+  //It must be called.
+  //Used to clean up streams in use.
   void dispose() {
     if (_subscriptions.isEmpty) {
       for (var streamController in _streamControllers) {

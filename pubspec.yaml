@@ -1,11 +1,11 @@
 name: timer_stop_watch
 description: Flutter Dart Package Try a timer and a stopwatch that can be modified freely.
-version: 0.0.2
+version: 0.0.3
 homepage: https://github.com/koreaksh/Timer_Stopwatch.git
 
 environment:
-  sdk: '>=2.19.2 <3.0.0'
-  flutter: ">=1.17.0"
+  sdk: '>=2.12.0 <3.0.0'
+  flutter: ">=1.16.0"
 
 dependencies:
   flutter:
@@ -14,7 +14,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
 
 flutter:
 
