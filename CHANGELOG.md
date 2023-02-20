@@ -1,3 +1,7 @@
+## 1.0.0
+
+* Add Timer/Stopwatch and Add start, pause, and reset functions
+
 ## 0.0.2
 
 * Update example Code

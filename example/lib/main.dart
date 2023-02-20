@@ -29,28 +29,32 @@ class TimerPage extends StatefulWidget {
 }
 
 class _TimerPageState extends State<TimerPage> {
-
   final _timerStopWatch = TimerStopWatch();
+  late Stream<String> _timer1;
 
   @override
   void initState() {
     super.initState();
+    _timer1 = _timerStopWatch.setTimer(hour: 1, minute: 1, seconds: 10, timeFormat: "hh-mm-ss");
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: StreamBuilder(stream: TimerStopWatch().startTimer(minute: 1, timeFormat: "hh:mm:ss"),builder: (context, snapshot) {
-          if(snapshot.hasData) {
-            return Text(snapshot.data.toString());
-          } else if(snapshot.hasError) { (error) =>
-            print(error);
-            return SizedBox();
-          } else {
-            return CircularProgressIndicator();
-          }
-        }),
+        child: StreamBuilder(
+          stream: _timer1,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Text(snapshot.data.toString());
+            } else if (snapshot.hasError) {
+              (error) => print(error);
+              return SizedBox();
+            } else {
+              return CircularProgressIndicator();
+            }
+          },
+        ),
       ),
     );
   }
