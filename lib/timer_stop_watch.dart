@@ -184,7 +184,6 @@ class _Timer {
     if(timeFormat != "") {
           if(hh != null) {
             sub = Stream.periodic(const Duration(seconds: 1), (_) {
-              print("신 - 실행됩니다1");
               if (--_seconds < 0) {
                 _seconds = 59;
                 if (--_minute < 0) {
@@ -201,7 +200,6 @@ class _Timer {
             });
           } else if(mm != null) {
             sub = Stream.periodic(const Duration(seconds: 1), (_) {
-              print("신 - 실행됩니다9");
               if (--_seconds < 0) {
                 _seconds = 59;
                 if (--_minute < 0) {
@@ -219,7 +217,6 @@ class _Timer {
           } else {
 
             sub = Stream.periodic(const Duration(seconds: 1), (_) {
-              print("신 - 실행됩니다10");
               if (--_seconds < 0) {
                 _seconds = 59;
                 if (--_minute < 0) {
@@ -236,11 +233,9 @@ class _Timer {
             });
       }
     } else {
-      print("신 - 실행됩니다10");
       _totalSeconds = totalSecondsAdd();
 
       sub = Stream.periodic(const Duration(seconds: 1), (_) {
-        print("신 - 실행됩니다11");
         if (--_totalSeconds < 0) {
           sub!.pause();
           return totalSecondsAdd().toString();
@@ -446,7 +441,6 @@ class _Stopwatch {
     if(timeFormat != "") {
       if(hh != null) {
         sub = Stream.periodic(const Duration(seconds: 1), (_) {
-          print("신 - 실행됩니다1");
           if (++seconds > 59) {
             seconds = 0;
             if (++minute > 59) {
@@ -463,7 +457,6 @@ class _Stopwatch {
         });
       } else if(mm != null) {
         sub = Stream.periodic(const Duration(seconds: 1), (_) {
-          print("신 - 실행됩니다9");
           if (++seconds > 59) {
             seconds = 0;
             if (++minute > 59) {
@@ -481,7 +474,6 @@ class _Stopwatch {
       } else {
 
         sub = Stream.periodic(const Duration(seconds: 1), (_) {
-          print("신 - 실행됩니다10");
           if (++seconds > 59) {
             seconds = 0;
             if (++minute > 59) {
@@ -498,10 +490,8 @@ class _Stopwatch {
         });
       }
     } else {
-      print("신 - 실행됩니다10");
 
       sub = Stream.periodic(const Duration(seconds: 1), (_) {
-        print("신 - 실행됩니다11");
         if (++seconds > 86400 ) {
           sub!.pause();
           return "0";
