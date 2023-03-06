@@ -60,3 +60,56 @@ class _MyAppState extends State<MyApp> {
   }
 }
 ```
+
+
+And Timer And Stopwatch Start  
+```dart
+ ElevatedButton(
+   onPressed: (){_timerStopWatch.startTimer();},
+   child: Text("start"),
+ ),
+```  
+
+  
+```dart
+ ElevatedButton(
+   onPressed: (){_timerStopWatch.startStopwatch();},
+   child: Text("start"),
+ ),
+```  
+
+or To start the timer&stopwatch immediately  
+```dart
+  _timer = _timerStopWatch.setTimer(hour: 1, minute: 1, seconds: 10, timeFormat: "hh:mm:ss", start: true);
+```   
+```dart
+  _stopwatch = _timerStopWatch.setStopwatch(timeFormat: "hh:mm:ss", start: true);
+``` 
+
+Timer And Stopwatch Pause  
+```dart
+  ElevatedButton(
+    onPressed: (){_timerStopWatch.pauseTimer();},
+    child: Text("pause"),
+  ),
+```  
+```dart
+  ElevatedButton(
+    onPressed: (){_timerStopWatch.pauseStopwatch();},
+    child: Text("pause"),
+  ),
+``` 
+
+Timer And Stopwatch Reset  
+```dart
+  ElevatedButton(
+    onPressed: (){_timerStopWatch.resetTimer();},
+    child: Text("Reset"),
+  ),
+```  
+```dart
+  ElevatedButton(
+    onPressed: (){_timerStopWatch.resetStopwatch();},
+    child: Text("Reset"),
+  ),
+
